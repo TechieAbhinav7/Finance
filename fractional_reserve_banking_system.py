@@ -1,6 +1,10 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 def simulate_frb():
     try:
-        deposit = int(input("Please enter the amount: "))
+        deposit = float(input("Please enter the amount: "))
         initial_deposit = deposit
         loan_ratio = 90/100
         reserve_ratio = 10/100
@@ -11,6 +15,8 @@ def simulate_frb():
         total_reserves = 0
         total_deposits = deposit
         min_threshold = 1
+        deposit_amount= []
+        cycle_count= []
     
         while reserves > min_threshold:
             total_loans += loan
@@ -21,6 +27,8 @@ def simulate_frb():
             deposit = new_deposits
             total_deposits += deposit
             cycle += 1
+            deposit_amount.append(round(deposit,2))
+            cycle_count.append(cycle)
     
             print(f"Cycle: {cycle} :: Deposit: {deposit:.2f} :: Loan: {loan:.2f} :: Reserve: {reserves:.2f}")
     
@@ -34,6 +42,9 @@ def simulate_frb():
         # print(f"\tThe total deposits amounted to {total_deposits:.2f}.")
         print(f"\tThe total loans amounted to {total_loans:.2f}.")
         print(f"\tThe total reserves amounted to {total_reserves:.2f}.\n \n \n")
+        df= pd.DataFrame({'Cycle': cycle, 'Deposit' : deposit_amount})
+        plt.colorbar(df['Deposit'])
+        plt.show()
     except ValueError:
         print("Please enter a valid integer.")
 
